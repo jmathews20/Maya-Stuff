@@ -1,6 +1,6 @@
 //Maya ASCII 2016 scene
 //Name: nothingness.ma
-//Last modified: Wed, Aug 26, 2015 02:56:59 PM
+//Last modified: Wed, Aug 26, 2015 03:00:10 PM
 //Codeset: 1252
 requires maya "2016";
 requires -nodeType "mentalrayFramebuffer" -nodeType "mentalrayOptions" -nodeType "mentalrayGlobals"
@@ -77,6 +77,19 @@ createNode transform -n "pCube1";
 	rename -uid "5F94A7A3-41E5-41A0-BADA-2FB6802DC852";
 createNode mesh -n "pCubeShape1" -p "pCube1";
 	rename -uid "C3E62CE5-4F34-82FC-0574-F2BC77F2B67E";
+	setAttr -k off ".v";
+	setAttr ".vir" yes;
+	setAttr ".vif" yes;
+	setAttr ".uvst[0].uvsn" -type "string" "map1";
+	setAttr ".cuvs" -type "string" "map1";
+	setAttr ".dcc" -type "string" "Ambient+Diffuse";
+	setAttr ".covm[0]"  0 1 1;
+	setAttr ".cdvm[0]"  0 1 1;
+createNode transform -n "pSphere1";
+	rename -uid "9221F54A-42C1-1785-9D17-BAB6472199F3";
+	setAttr ".t" -type "double3" -5.0874048359371127 0 0 ;
+createNode mesh -n "pSphereShape1" -p "pSphere1";
+	rename -uid "277FFD25-4EA5-371C-BF55-C986375FC841";
 	setAttr -k off ".v";
 	setAttr ".vir" yes;
 	setAttr ".vif" yes;
@@ -427,6 +440,8 @@ createNode script -n "sceneConfigurationScriptNode";
 createNode polyCube -n "polyCube1";
 	rename -uid "3B369A26-45F2-78D7-DCBC-ABA9FCD9A4AF";
 	setAttr ".cuv" 4;
+createNode polySphere -n "polySphere1";
+	rename -uid "5AAAA8AE-41BA-F9A1-2A21-FBBE8F76F32D";
 select -ne :time1;
 	setAttr ".o" 1;
 	setAttr ".unw" 1;
@@ -445,6 +460,7 @@ select -ne :postProcessList1;
 	setAttr -s 2 ".p";
 select -ne :defaultRenderingList1;
 select -ne :initialShadingGroup;
+	setAttr -s 2 ".dsm";
 	setAttr ".ro" yes;
 select -ne :initialParticleSE;
 	setAttr ".ro" yes;
@@ -454,6 +470,7 @@ select -ne :hardwareRenderGlobals;
 	setAttr ".ctrs" 256;
 	setAttr ".btrs" 512;
 connectAttr "polyCube1.out" "pCubeShape1.i";
+connectAttr "polySphere1.out" "pSphereShape1.i";
 relationship "link" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
 relationship "shadowLink" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
@@ -467,4 +484,5 @@ connectAttr ":miDefaultOptions.msg" ":mentalrayGlobals.opt";
 connectAttr ":miDefaultFramebuffer.msg" ":mentalrayGlobals.fb";
 connectAttr "defaultRenderLayer.msg" ":defaultRenderingList1.r" -na;
 connectAttr "pCubeShape1.iog" ":initialShadingGroup.dsm" -na;
+connectAttr "pSphereShape1.iog" ":initialShadingGroup.dsm" -na;
 // End of nothingness.ma
